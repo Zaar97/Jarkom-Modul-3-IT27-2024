@@ -158,7 +158,7 @@
 	iface eth0 inet static
   	address 10.77.1.3
   	netmask 255.255.255.0
-  	gateway 10.77.1.4        
+  	gateway 10.77.1.0        
     ```
 
 - **Client**
