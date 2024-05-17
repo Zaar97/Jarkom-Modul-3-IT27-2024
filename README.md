@@ -72,7 +72,7 @@
     	iface eth0 inet static
 	address 10.77.3.1
 	netmask 255.255.255.0
-	gateway 10.77.1.0
+	gateway 10.77.3.0
     ```
 
 - **DNS Server**
@@ -82,7 +82,7 @@
     	iface eth0 inet static
     	address 10.77.3.2
 	netmask 255.255.255.0
-	gateway 10.77.1.0  
+	gateway 10.77.3.0  
     ```
 
 - **Database Server**
@@ -92,7 +92,7 @@
 	iface eth0 inet static
 	address 10.77.4.1
 	netmask 255.255.255.0
-	gateway 10.77.2.0  
+	gateway 10.77.4.0  
     ```
 
 - **Load Balancer**
@@ -102,7 +102,7 @@
 	iface eth0 inet static
 	address 10.77.4.2
 	netmask 255.255.255.0
-	gateway 10.77.2.0  
+	gateway 10.77.4.0  
     ```
 
 - **Laravel Worker**
@@ -112,7 +112,7 @@
 	iface eth0 inet static
   	address 10.77.2.1
   	netmask 255.255.255.0
-  	gateway 10.77.3.0  
+  	gateway 10.77.2.0  
     ```
 
   - Duncan
@@ -121,7 +121,7 @@
 	iface eth0 inet static
   	address 10.77.2.2
   	netmask 255.255.255.0
-  	gateway 10.77.3.0       
+  	gateway 10.77.2.0       
     ```
       
   - Jessica
@@ -130,7 +130,7 @@
 	iface eth0 inet static
   	address 10.77.2.3
   	netmask 255.255.255.0
-  	gateway 10.77.3.0        
+  	gateway 10.77.2.0        
     ```
 
 - **PHP Worker**
@@ -140,7 +140,7 @@
 	iface eth0 inet static
   	address 10.77.1.1
   	netmask 255.255.255.0
-  	gateway 10.77.4.0  
+  	gateway 10.77.1.0  
     ```      
 
   - Rabban
@@ -149,7 +149,7 @@
 	iface eth0 inet static
   	address 10.77.1.2
   	netmask 255.255.255.0
-  	gateway 10.77.4.0        
+  	gateway 10.77.1.0        
     ```
 
   - Feyd
@@ -158,7 +158,7 @@
 	iface eth0 inet static
   	address 10.77.1.3
   	netmask 255.255.255.0
-  	gateway 10.77.4.4        
+  	gateway 10.77.1.4        
     ```
 
 - **Client**
