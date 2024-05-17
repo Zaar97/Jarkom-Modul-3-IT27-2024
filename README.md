@@ -185,7 +185,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **DHCP Server**
   ```bash
-	echo 'nameserver 10.77.1.2' > /etc/resolv.conf  
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf  
 	apt-get update
 	apt install isc-dhcp-server -y       
   ```
@@ -196,7 +196,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Database Server**
   ```bash
-	echo 'nameserver 10.77.1.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install mariadb-server -y
 	service mysql start
@@ -205,7 +205,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Load Balancer**
   ```bash
-	echo 'nameserver 10.77.1.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install apache2-utils -y
 	apt-get install nginx -y
@@ -215,7 +215,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Worker PHP**
   ```bash
-	echo 'nameserver 10.77.1.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install nginx -y
 	apt-get install wget -y
@@ -230,12 +230,12 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Worker Laravel**
   ```bash
-	echo 'nameserver 10.77.1.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install lynx -y
 	apt-get install mariadb-client -y
 	# Test connection from worker to database
-	# mariadb --host=10.77.2.1 --port=3306   --user=kelompokit27 --password=passwordit27 dbkelompokit27 -e "SHOW DATABASES;"
+	# mariadb --host=10.77.4.1 --port=3306   --user=kelompokit27 --password=passwordit27 dbkelompokit27 -e "SHOW DATABASES;"
 	apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
 	curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
 	sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
