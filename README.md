@@ -41,38 +41,38 @@
   - Arakis
     ```bash
     auto eth0
-      iface eth0 inet dhcp
-      up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.77.0.0/16
+    	iface eth0 inet dhcp
+      	up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.77.0.0/16
 
     auto eth1
-      iface eth1 inet static
-      address 10.77.1.0
-      netmask 255.255.255.0
+    	iface eth1 inet static
+      	address 10.77.1.0
+      	netmask 255.255.255.0
 
     auto eth2
-      iface eth2 inet static
-      address 10.77.2.0
-      netmask 255.255.255.0
+    	iface eth2 inet static
+    	address 10.77.2.0
+    	netmask 255.255.255.0
 
     auto eth3
-      iface eth3 inet static
-	    address 10.77.3.0
-	    netmask 255.255.255.0
+    	iface eth3 inet static
+	address 10.77.3.0
+	netmask 255.255.255.0
 
     auto eth4
-      iface eth4 inet static
-	    address 10.77.4.0
-	    netmask 255.255.255.0
+    	iface eth4 inet static
+	address 10.77.4.0
+	netmask 255.255.255.0
     ```
 
 - **DHCP Server**
   - Mohiam
     ```bash
     auto eth0
-      iface eth0 inet static
-	    address 10.77.3.1
-	    netmask 255.255.255.0
-	    gateway 10.77.1.0
+    	iface eth0 inet static
+	address 10.77.3.1
+	netmask 255.255.255.0
+	gateway 10.77.1.0
     ```
 
 - **DNS Server**
@@ -117,7 +117,7 @@
 
   - Duncan
     ```bash
-     auto eth0
+    auto eth0
 	iface eth0 inet static
   	address 10.77.2.2
   	netmask 255.255.255.0
@@ -164,13 +164,13 @@
 - **Client**
   - Dmitri
     ```bash
-    	auto eth0
+    auto eth0
 	iface eth0 inet dhcp       
     ```
 
   - Paul
     ```bash
-    	auto eth0
+    auto eth0
 	iface eth0 inet dhcp        
     ```
 ## Prerequisite
