@@ -34,7 +34,7 @@
 
 ## Topology
 
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/106866e6-0b7a-435f-86b5-efe64f459b36)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/59e95f50-8db4-40c5-b0a7-0f96bcb929f3)
 
 ## Network Configuration
 - **Router (DHCP Relay)**
@@ -70,7 +70,7 @@
     ```bash
     auto eth0
       iface eth0 inet static
-	    address 10.77.1.1
+	    address 10.77.3.1
 	    netmask 255.255.255.0
 	    gateway 10.77.1.0
     ```
@@ -80,7 +80,7 @@
     ```bash
     auto eth0
     	iface eth0 inet static
-    	address 10.77.1.2
+    	address 10.77.3.2
 	netmask 255.255.255.0
 	gateway 10.77.1.0  
     ```
@@ -90,7 +90,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-	address 10.77.2.1
+	address 10.77.4.1
 	netmask 255.255.255.0
 	gateway 10.77.2.0  
     ```
@@ -100,7 +100,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-	address 10.77.2.2
+	address 10.77.4.2
 	netmask 255.255.255.0
 	gateway 10.77.2.0  
     ```
@@ -110,7 +110,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address 10.77.3.2
+  	address 10.77.2.1
   	netmask 255.255.255.0
   	gateway 10.77.3.0  
     ```
@@ -119,7 +119,7 @@
     ```bash
      auto eth0
 	iface eth0 inet static
-  	address 10.77.3.3
+  	address 10.77.2.2
   	netmask 255.255.255.0
   	gateway 10.77.3.0       
     ```
@@ -128,7 +128,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address 10.77.3.4
+  	address 10.77.2.3
   	netmask 255.255.255.0
   	gateway 10.77.3.0        
     ```
@@ -138,7 +138,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address 10.77.4.2
+  	address 10.77.1.1
   	netmask 255.255.255.0
   	gateway 10.77.4.0  
     ```      
@@ -147,7 +147,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address 10.77.4.3
+  	address 10.77.1.2
   	netmask 255.255.255.0
   	gateway 10.77.4.0        
     ```
@@ -156,7 +156,7 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address 10.77.4.4
+  	address 10.77.1.3
   	netmask 255.255.255.0
   	gateway 10.77.4.4        
     ```
