@@ -363,3 +363,6 @@ service bind9 restart
 
 ### Result
 
+## Soal 2
+
+> Client yang melalui House Harkonen mendapatkan range IP dari [prefix IP].1.14 - [prefix IP].1.28 dan [prefix IP].1.49 - [prefix IP].1.70
