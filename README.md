@@ -11,26 +11,6 @@
   - [Topology](#topology)
   - [Network Configurations](#network-configurations)
   - [Prerequisite](#prerequisite)
-- [Soal 1](#soal-1)
-- [Soal 2](#soal-2)
-- [Soal 3](#soal-3)
-- [Soal 4](#soal-4)
-- [Soal 5](#soal-5)
-- [Soal 6](#soal-6)
-- [Soal 7](#soal-7)
-- [Soal 8](#soal-8)
-- [Soal 9](#soal-9)
-- [Soal 10](#soal-10)
-- [Soal 11](#soal-11)
-- [Soal 12](#soal-12)
-- [Soal 13](#soal-13)
-- [Soal 14](#soal-14)
-- [Soal 77](#soal-77)
-- [Soal 16](#soal-16)
-- [Soal 17](#soal-17)
-- [Soal 18](#soal-18)
-- [Soal 19](#soal-19)
-- [Soal 20](#soal-20)
 
 ## Topology
 
@@ -207,7 +187,8 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
 - **DHCP Relay**
   ```bash
 	apt-get update
-	apt install isc-dhcp-relay -y     
+	apt install isc-dhcp-relay -y
+  	service isc-dhcp-relay start     
   ```
 - **Database Server**
   ```bash
@@ -263,10 +244,10 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Client**
   ```bash
-	apt update
-	apt install lynx -y
-	apt install htop -y
-	apt install apache2-utils -y
+	apt-get update
+	apt-get install lynx -y
+	apt-get install htop -y
+	apt-get install apache2-utils -y
 	apt-get install jq -y     
   ```
 
@@ -361,8 +342,77 @@ echo 'options {
 service bind9 restart
 ```
 
-### Result
+## Soal 2,3,4,5
 
-## Soal 2
+- Semua CLIENT harus menggunakan konfigurasi dari DHCP Server.
+- Client yang melalui House Harkonen mendapatkan range IP dari [prefix IP].1.14 - [prefix IP].1.28 dan [prefix IP].1.49 - [prefix IP].1.70 
+- Client yang melalui House Atreides mendapatkan range IP dari [prefix IP].2.15 - [prefix IP].2.25 dan [prefix IP].2 .200 - [prefix IP].2.210 
+- Client mendapatkan DNS dari Princess Irulan dan dapat terhubung dengan internet melalui DNS tersebut 
+- Durasi DHCP server meminjamkan alamat IP kepada Client yang melalui House Harkonen selama 5 menit sedangkan pada client yang melalui House Atreides selama 20 menit. Dengan waktu maksimal dialokasikan untuk peminjaman alamat IP selama 87 menit
 
-> Client yang melalui House Harkonen mendapatkan range IP dari [prefix IP].1.14 - [prefix IP].1.28 dan [prefix IP].1.49 - [prefix IP].1.70
+### Script
+
+lakukan konfigurasi DHCP Server pada Mohiam
+
+```bash
+apt-get update
+apt-get install isc-dhcp-server -y
+
+interfaces="INTERFACESv4=\"eth0\"
+INTERFACESv6=\"\"
+"
+echo "$interfaces" > /etc/default/isc-dhcp-server
+
+subnet="option domain-name \"example.org\";
+option domain-name-servers ns1.example.org, ns2.example.org;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+ddns-update-style-none;
+
+subnet 10.77.1.0 netmask 255.255.255.0 {
+    range 10.77.1.14 10.77.1.28;
+    range 10.77.1.49 10.77.1.70;
+    option routers 10.77.1.0;
+    option broadcast-address 10.77.1.255;
+    option domain-name-servers 10.77.3.2;
+    default-lease-time 300;
+    max-lease-time 5220;
+}
+
+subnet 10.77.2.0 netmask 255.255.255.0 {
+    range 10.77.2.15 10.77.2.25;
+    range 10.77.2.200 10.77.2.210;
+    option routers 10.77.2.0;
+    option broadcast-address 10.77.2.255;
+    option domain-name-servers 10.77.3.2;
+    default-lease-time 1200;
+    max-lease-time 5220;
+}
+
+subnet 10.77.3.0 netmask 255.255.255.0 {
+}
+
+subnet 10.77.4.0 netmask 255.255.255.0 {
+}
+
+"
+echo "$subnet" > /etc/dhcp/dhcpd.conf
+
+service isc-dhcp-server restart
+```
+
+### Testing Result
+
+`ping -c 5 google.com`
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/8386ad56-df8f-4584-b07e-e8de84caa263)
+
+`ping -c 5 atreides.it27.com`
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/e6f94795-d6c5-43e2-b47a-8d7c5340af01)
+
+`ping -c 5 harkonen.it27.com`
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/679302b1-aad5-40dd-a724-0f634a03ef37)
