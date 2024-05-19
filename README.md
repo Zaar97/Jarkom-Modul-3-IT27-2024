@@ -213,21 +213,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
 
 	service nginx start     
   ```
-- **Worker PHP**
-  ```bash
-	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
-	apt-get update
-	apt-get install nginx -y
-	apt-get install wget -y
-	apt-get install unzip -y
-	apt-get install lynx -y
-	apt-get install htop -y
-	apt-get install apache2-utils -y
-	apt-get install php7.3-fpm php7.3-common php7.3-mysql php7.3-gmp php7.3-curl php7.3-intl php7.3-mbstring php7.3-xmlrpc php7.3-gd php7.3-xml php7.3-cli php7.3-zip -y
 
-	service nginx start
-	service php7.3-fpm start    
-  ```
 - **Worker Laravel**
   ```bash
 	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
@@ -430,52 +416,64 @@ service isc-dhcp-server restart
 
 > Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
 
-Sebelum mengerjakan perlu untuk melakukan [setup](#prerequisite) terlebih dahulu pada seluruh PHP Worker. Jika sudah, silahkan untuk melakukan konfigurasi tambahan sebagai berikut untuk melakukan download dan unzip menggunakan command wget
-
-```bash
-wget --no-check-certificate 'https://drive.google.com/file/d/1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30/view?usp=sharing' -O '/var/www/harkonen.it27.com'
-unzip -o /var/www/harkonen.it27.com -d /var/www/
-rm /var/www/harkonen.it27.com
-mv /var/www/modul-3 /var/www/harkonen.it27.com
-```
-
 ### Script
 
 ```bash
+echo 'nameserver 10.77.3.2' > /etc/resolv.conf
+
+apt-get update
+apt-get install nginx -y
+apt-get install lynx -y
+apt-get install php php-fpm -y
+apt-get install wget -y
+apt-get install unzip -y
+service nginx start
+service php7.3-fpm start
+
+wget -O '/var/www/harkonen.it27.com' 'https://drive.usercontent.google.com/u/0/uc?id=1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30&export=download'
+unzip -o /var/www/harkonen.it27.com -d /var/www/
+rm /var/www/harkonen.it27.com
+mv /var/www/modul-3 /var/www/harkonen.it27.com
+
+source /root/script.sh
+/root/script.sh
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/harkonen.it27.com
 ln -s /etc/nginx/sites-available/harkonen.it27.com /etc/nginx/sites-enabled/
 rm /etc/nginx/sites-enabled/default
 
-
 echo 'server {
-    listen 80;
-    server_name _;
+     listen 80;
+     server_name _;
 
+     root /var/www/harkonen.it27.com;
+     index index.php index.html index.htm;
 
-    root /var/www/harkonen.it27.com;
-    index index.php index.html index.htm;
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
 
+     location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+     }
+ }' > /etc/nginx/sites-available/harkonen.it27.com
 
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.3-fpm.sock;  # Sesuaikan versi PHP dan socket
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-}' > /etc/nginx/sites-available/granz.channel.it26.com
-
-
-service nginx restart
+ service nginx restart
 ```
+
+Lalu jalankan bash script dengan `source /root/.bashrc`
 
 ### Testing Result
 
 Jalanin Perintah `lynx localhost` pada masing-masing worker dan hasilnya akan sebagai berikut:
+![Screenshot 2024-05-19 174238](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/c42b039a-980d-4b10-b28b-692a2923e44c)
+
+![Screenshot 2024-05-19 173908](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/07d4e7b9-2e96-43b1-98ca-39354d6e2cc3)
+
+![Screenshot 2024-05-19 174024](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/5e87272a-ae73-46d6-b0c2-3ab936a05893)
+
 
 ## Soal 7
 > Aturlah agar Stilgar dari fremen dapat dapat bekerja sama dengan maksimal, lalu lakukan testing dengan 5000 request dan 150 request/second.
