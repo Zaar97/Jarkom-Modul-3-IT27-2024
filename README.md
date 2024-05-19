@@ -778,9 +778,9 @@ upstream leastconn_worker {
 
 Dapat dilihat, request tersebut menghasilkan `Requests per second:     1118.56 [#/sec] (mean)`
 
-```
 ## Soal 10
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/
+
 
 ## Soal 13
 > Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica
