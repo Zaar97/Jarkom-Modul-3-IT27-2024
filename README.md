@@ -560,8 +560,10 @@ service nginx restart
 Jalankan perintah berikut pada client
 
 ```bash
-ab -n 1000 -c 100 http://www.harkonen.it27.com/
+ab -n 5000 -c 150 http://www.harkonen.it27.com/
 ```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/12ad432b-2212-4512-8eec-bad67d179bb1)
 
 ## Soal 8
 > Karena diminta untuk menuliskan peta tercepat menuju spice, buatlah analisis hasil testing dengan 500 request dan 50 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
