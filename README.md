@@ -747,3 +747,152 @@ mariadb --host=10.7.4.1 --port=3306 --user=kelompokit27 --password=passwordit27 
 **Jessica** <br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/4137a1fd-f36b-4996-b33a-2e7a908b49f4)
 
+## Soal 14
+> Leto, Duncan, dan Jessica memiliki atreides Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
+
+- Script.sh 
+  ```
+  git clone https://github.com/martuafernando/laravel-praktikum-jarkom.git
+  mv laravel-praktikum-jarkom /var/www/laravel-praktikum-jarkom
+
+  cd /var/www/laravel-praktikum-jarkom
+  composer update
+  composer install
+  # Mengganti nama file .env.example menjadi .env
+  mv .env.example .env
+
+  # Menambahkan konfigurasi ke dalam file .env
+    echo "DB_CONNECTION=mysql" >> .env
+    echo "DB_HOST=10.77.4.1" >> .env
+    echo "DB_PORT=3306" >> .env
+    echo "DB_DATABASE=dbkelompokit27" >> .env
+    echo "DB_USERNAME=kelompokit27" >> .env
+    echo "DB_PASSWORD=passwordit27" >> .env
+
+  # Menjalankan migrasi database
+    php artisan migrate:fresh
+
+  # Menjalankan seed untuk tabel Airings
+    php artisan db:seed --class=AiringsTableSeeder
+
+  # Menghasilkan kunci aplikasi
+    php artisan key:generate
+
+  # Menghasilkan kunci JWT
+    php artisan jwt:secret
+
+  # Membuat symlink untuk penyimpanan
+    php artisan storage:link
+
+  # Menambahkan konfigurasi server Nginx ke dalam file laravel-worker
+  echo 'server {
+      listen 8001; #sesuaikan dengan worker tempat kita sekarang (leto 1, duncan 2, jessica 3)
+      root /var/www/laravel-praktikum-jarkom/public;
+      index index.php index.html index.htm;
+      server_name _;
+      location / {
+          try_files \$uri \$uri/ /index.php?\$query_string;
+      }
+      location ~ \\.php$ {
+          include snippets/fastcgi-php.conf;
+          fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+      }
+      location ~ /\\.ht {
+          deny all;
+      }
+      error_log /var/log/nginx/laravel-worker_error.log;
+      access_log /var/log/nginx/laravel-worker_access.log;
+  }' > /etc/nginx/sites-available/laravel-worker
+
+  ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/
+  chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/
+
+  service nginx restart
+  service php8.0-fpm start
+  ```
+
+# Penjelasan Skrip Instalasi dan Konfigurasi Laravel
+
+Skrip ini menjelaskan langkah-langkah untuk menginstal dan mengonfigurasi aplikasi Laravel, termasuk pengaturan lingkungan, migrasi database, dan konfigurasi server Nginx.
+
+## Langkah-langkah Skrip
+
+### 1. Kloning Repository Laravel
+```
+git clone https://github.com/martuafernando/laravel-praktikum-jarkom.git
+mv laravel-praktikum-jarkom /var/www/laravel-praktikum-jarkom
+```
+### 2. Masuk ke Direktori dan Install Composer 
+```
+cd /var/www/laravel-praktikum-jarkom
+composer update
+composer install
+```
+### 3. Rename file .env.example menjadi .env dan tambahkan konfigurasi berikut
+```
+mv .env.example .env
+
+echo "DB_CONNECTION=mysql" >> .env
+echo "DB_HOST=192.243.2.1" >> .env
+echo "DB_PORT=3306" >> .env
+echo "DB_DATABASE=dbkelompokit20" >> .env
+echo "DB_USERNAME=kelompokit20" >> .env
+echo "DB_PASSWORD=passwordit20" >> .env
+```
+### 4. Menjalankan Migrasi Database
+```
+php artisan migrate:fresh
+```
+### 5. Menjalankan Seeder untuk Tabel Airings
+```
+php artisan db:seed --class=AiringsTableSeeder
+```
+### 6. Menghasilkan Kunci Aplikasi
+```
+php artisan key:generate
+```
+### 7. Menghasilkan Kunci JWT
+```
+php artisan jwt:secret
+```
+### 8. Membuat Symlink untuk Penyimpanan
+```
+php artisan storage:link
+```
+### 9. Menambahkan Konfigurasi Server Nginx
+```
+echo 'server {
+    listen 8001;
+    root /var/www/laravel-praktikum-jarkom/public;
+    index index.php index.html index.htm;
+    server_name _;
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+    location ~ \\.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;
+    }
+    location ~ /\\.ht {
+        deny all;
+    }
+    error_log /var/log/nginx/laravel-worker_error.log;
+    access_log /var/log/nginx/laravel-worker_access.log;
+}' > /etc/nginx/sites-available/laravel-worker
+```
+### 10. Mengaktifkan Konfigurasi Nginx
+```
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/
+```
+### 11. Mengubah Kepemilikan Direktori
+```
+chown -R www-data.www-data /var/www/laravel-praktikum-jarkom/
+```
+### 12. Memulai Ulang Nginx dan PHP-FPM
+```
+service nginx restart
+service php8.0-fpm start
+```
+### Result
+**Jessica**
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/01b0e88d-a6b8-4abf-97b6-35913d5bfeb5)
