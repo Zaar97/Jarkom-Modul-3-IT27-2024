@@ -739,13 +739,13 @@ mariadb --host=10.7.4.1 --port=3306 --user=kelompokit27 --password=passwordit27 
 ```
 ### Result
 **Leto**<br>
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/01cca8af-d28a-49f8-96f7-1458e58e8885)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e3ccf558-6eb8-4af7-8be8-da088d35c08c)
 
 **Duncan** <br>
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/1b5aa98f-4405-441e-8f66-337e033c5653)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e01e583c-b3cf-4411-ac7a-7c970f1b58b0)
 
 **Jessica** <br>
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/4137a1fd-f36b-4996-b33a-2e7a908b49f4)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/ab6027f8-83b7-4435-ae30-3c47b64c0128)
 
 ## Soal 14
 > Leto, Duncan, dan Jessica memiliki atreides Channel sesuai dengan quest guide berikut. Jangan lupa melakukan instalasi PHP8.0 dan Composer
