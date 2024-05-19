@@ -49,20 +49,20 @@
   - Mohiam
     ```bash
     auto eth0
-    	iface eth0 inet static
-	address 10.77.3.1
-	netmask 255.255.255.0
-	gateway 10.77.3.0
+    iface eth0 inet static
+    address 10.77.3.1
+    netmask 255.255.255.0
+    gateway 10.77.3.0
     ```
 
 - **DNS Server**
   - Irulan
     ```bash
     auto eth0
-    	iface eth0 inet static
-    	address 10.77.3.2
-	netmask 255.255.255.0
-	gateway 10.77.3.0  
+    iface eth0 inet static
+    address 10.77.3.2
+    netmask 255.255.255.0
+    gateway 10.77.3.0  
     ```
 
 - **Database Server**
