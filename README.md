@@ -517,7 +517,9 @@ $TTL    604800
 @       IN      AAAA    ::1' > /etc/bind/harkonen/harkonen.it27.com
 ```
 
-Lalu kembali ke node `Stilgar` dan lakukan konfigurasi pada nginx sebagai berikut
+`@       IN      A       10.77.4.2` disini IP diarahkan ke node Load Balancer Stilgar
+
+Lalu kembali ke node `Stilgar` dan lakukan Konfigurasi `/root/.bashrc` untuk nginx sebagai berikut
 
 ```bash
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
@@ -538,13 +540,17 @@ server {
 
     server_name _;
 
-    location / {
+        location / {
+
         proxy_pass http://worker;
     }
 } ' > /etc/nginx/sites-available/lb_php
 
-ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
-rm /etc/nginx/sites-enabled/default
+ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm /etc/nginx/sites-enabled/default
+fi
 
 service nginx restart
 ```
@@ -554,7 +560,7 @@ service nginx restart
 Jalankan perintah berikut pada client
 
 ```bash
-ab -n 5000 -c 150 http://www.harkonen.it30.com/
+ab -n 5000 -c 150 http://www.harkonen.it27.com/
 ```
 
 ## Soal 8
@@ -667,9 +673,17 @@ ab -n 1000 -c 10 http://www.harkonen.it27.com/leastconn/
 
 **3 Worker**
 
+```bash
+upstream leastconn_worker {
+    least_conn;
+    server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
+}
+```
+
 **2 Worker**
 
-Sebelum testing, pastikan mengcomment IP worker yang ingin dimatikan pada file /etc/nginx/sites-available/lb_php
 ```bash
 upstream leastconn_worker {
     least_conn;
@@ -681,7 +695,6 @@ upstream leastconn_worker {
 
 **1 Worker**
 
-Sebelum testing, pastikan mengcomment IP worker yang ingin dimatikan pada file /etc/nginx/sites-available/lb_php
 ```bash
 upstream leastconn_worker {
     least_conn;
