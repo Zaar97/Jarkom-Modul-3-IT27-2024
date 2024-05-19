@@ -466,6 +466,7 @@ echo 'server {
 
 
 service nginx restart
+service php7.3-fpm start
 ```
 
 ### Testing Result
@@ -551,7 +552,7 @@ service nginx restart
 Jalankan perintah berikut pada client
 
 ```bash
-ab -n 5000 -c 150 http://www.harkonen.it27.com/
+ab -n 1000 -c 100 http://www.harkonen.it27.com/
 ```
 
 ## Soal 8
@@ -635,6 +636,7 @@ server {
     }
 } ' > /etc/nginx/sites-available/lb_php
 
+service nginx restart
 ```
 
 ### Testing
