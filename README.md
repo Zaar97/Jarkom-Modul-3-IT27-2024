@@ -833,11 +833,11 @@ composer install
 mv .env.example .env
 
 echo "DB_CONNECTION=mysql" >> .env
-echo "DB_HOST=192.243.2.1" >> .env
+echo "DB_HOST=10.77.4.1" >> .env
 echo "DB_PORT=3306" >> .env
-echo "DB_DATABASE=dbkelompokit20" >> .env
-echo "DB_USERNAME=kelompokit20" >> .env
-echo "DB_PASSWORD=passwordit20" >> .env
+echo "DB_DATABASE=dbkelompokit27" >> .env
+echo "DB_USERNAME=kelompokit27" >> .env
+echo "DB_PASSWORD=passwordit27" >> .env
 ```
 ### 4. Menjalankan Migrasi Database
 ```
