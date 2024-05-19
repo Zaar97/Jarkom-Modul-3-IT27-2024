@@ -759,6 +759,10 @@ upstream leastconn_worker {
 }
 ```
 
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/8384d039-1a1a-40a4-a446-1953ae74f129)
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:     973.39 [#/sec] (mean)`
+
 **1 Worker**
 
 ```bash
@@ -768,6 +772,12 @@ upstream leastconn_worker {
     # server 10.77.1.2;
     server 10.77.1.3;
 }
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/0eff4209-c5f3-4eb6-859b-caa866dd0db6)
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:     1118.56 [#/sec] (mean)`
+
 ```
 ## Soal 10
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/
