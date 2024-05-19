@@ -628,8 +628,6 @@ server {
 
     location / {
         proxy_pass http://worker;
-        auth_basic "Restricted Content";
-        auth_basic_user_file /etc/nginx/supersecret/htpasswd;
     }
     location /roundrobin {
         proxy_pass http://roundrobin_worker;
@@ -778,9 +776,135 @@ upstream leastconn_worker {
 
 Dapat dilihat, request tersebut menghasilkan `Requests per second:     1118.56 [#/sec] (mean)`
 
+### Grafik
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/8f57b3da-8744-46a1-937e-1528851b4030)
+
+1 Worker memiliki waktu request terlama.
+
 ## Soal 10
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/
 
+### Script
+
+**Stilgar**
+
+Membuat folder supersecret 
+```bash
+mkdir /etc/nginx/supersecret 
+htpasswd -c /etc/nginx/supersecret/htpasswd secmart 
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/a73490a5-eab9-4e71-a005-32c7d154e61e)
+
+`password = kcksit27`
+
+Mengubah konfigurasi nginx
+```bash
+auth_basic "Restricted Content";
+auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+```
+
+```bash
+mkdir -p /etc/nginx/supersecret
+
+htpasswd -bc /etc/nginx/supersecret/htpasswd secmart kcksit27
+
+echo '
+upstream worker {
+    server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it27.com www.harkonen.it27.com;
+    
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+	
+    location / {
+        proxy_pass http://worker;   
+    	auth_basic "Restricted Content";
+    	auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+	}
+    
+}' > /etc/nginx/sites-available/lb_php
+
+ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+#rm /etc/nginx/sites-enabled/default
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm /etc/nginx/sites-enabled/default
+fi
+
+service nginx restart
+```
+
+### Testing
+
+Jalankan lynx http://harkonen.it30.com/ pada Client Paul untuk melihat apakah autentikasi bisa berfungsi.
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/46c99526-a741-4e11-9b01-1b76c79b6492)
+
+
+## Soal 11
+Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/. **hint: (proxy_pass)**
+
+```bash
+echo '
+upstream worker {
+    server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it27.com www.harkonen.it27.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+    
+    location ~ /dune {
+    	rewrite ^/dune(.*)$ /$1 break;
+     	proxy_pass https://www.dunemovie.com.au:443;
+      	break;
+       }
+	
+    location / {
+        proxy_pass http://worker;   
+    	auth_basic "Restricted Content";
+    	auth_basic_user_file /etc/nginx/supersecret/htpasswd;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header    Host $http_host;
+	}
+    
+}' > /etc/nginx/sites-available/lb_php
+
+ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+#rm /etc/nginx/sites-enabled/default
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm /etc/nginx/sites-enabled/default
+fi
+
+service nginx restart
+```
+
+## Soal 12
+Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].1.37, [Prefix IP].1.67, [Prefix IP].2.203, dan [Prefix IP].2.207. **hint: (fixed in dulu clientnya)**
 
 ## Soal 13
 > Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica
