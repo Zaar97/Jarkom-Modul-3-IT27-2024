@@ -409,6 +409,11 @@ service isc-dhcp-server restart
 
 ### Testing Result
 
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/cfc74171-8d2c-48e6-b615-57572249d2ee)
+
+`ip a`
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/e8713d49-09f1-4312-8138-f88a2b9bbf25)
+
 `ping -c 5 google.com`
 
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/8386ad56-df8f-4584-b07e-e8de84caa263)
