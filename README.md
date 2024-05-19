@@ -416,3 +416,16 @@ service isc-dhcp-server restart
 `ping -c 5 harkonen.it27.com`
 
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/679302b1-aad5-40dd-a724-0f634a03ef37)
+
+## Soal 6
+
+> Vladimir Harkonen memerintahkan setiap worker(harkonen) PHP, untuk melakukan konfigurasi virtual host untuk website berikut dengan menggunakan php 7.3.
+
+Sebelum mengerjakan perlu untuk melakukan [setup](#prerequisite) terlebih dahulu pada seluruh PHP Worker. Jika sudah, silahkan untuk melakukan konfigurasi tambahan sebagai berikut untuk melakukan download dan unzip menggunakan command wget
+
+```bash
+wget -O '/var/www/harkonen.it27.com' 'https://drive.google.com/file/d/1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30/view?usp=sharing'
+unzip -o /var/www/harkonen.it27.com -d /var/www/
+rm /var/www/harkonen.it27.com
+mv /var/www/modul-3 /var/www/harkonen.it27.com
+```
