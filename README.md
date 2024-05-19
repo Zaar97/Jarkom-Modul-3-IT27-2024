@@ -744,6 +744,10 @@ upstream leastconn_worker {
 }
 ```
 
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/117ff269-664d-41ac-a322-aa1bd62d2b55)
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    834.54 [#/sec] (mean)`
+
 **2 Worker**
 
 ```bash
