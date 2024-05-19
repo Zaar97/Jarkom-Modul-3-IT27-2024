@@ -1,42 +1,42 @@
+echo 'nameserver 10.77.3.2' > /etc/resolv.conf
+
 apt-get update
-apt-get install nginx wget unzip php7.3 php-fpm -y
-
+apt-get install nginx -y
+apt-get install lynx -y
+apt-get install php php-fpm -y
+apt-get install wget -y
+apt-get install unzip -y
 service nginx start
+service php7.3-fpm start
 
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30' -O 'harkonen.zip'
-unzip harkonen.zip
+wget -O '/var/www/harkonen.it27.com' 'https://drive.usercontent.google.com/u/0/uc?id=1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30&export=download'
+unzip -o /var/www/harkonen.it27.com -d /var/www/
+rm /var/www/harkonen.it27.com
+mv /var/www/modul-3 /var/www/harkonen.it27.com
 
-# meletakkan komponen web
-mkdir -p /var/www/jarkom_it27
-mv modul-3 /var/www/jarkom_it27/
-
-rm -rf modul-3
-rm harkonen.zip
+source /root/script.sh
+/root/script.sh
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/harkonen.it27.com
+ln -s /etc/nginx/sites-available/harkonen.it27.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
 
 echo 'server {
-    listen 80;
+     listen 80;
+     server_name _;
 
-    server_name _;
+     root /var/www/harkonen.it27.com;
+     index index.php index.html index.htm;
 
-    root /var/www/jarkom_it27;
-    index index.php index.html index.htm;
-    
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+     location / {
+         try_files $uri $uri/ /index.php?$query_string;
+     }
 
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-    }
+     location ~ \.php$ {
+         include snippets/fastcgi-php.conf;
+         fastcgi_pass unix:/run/php/php7.3-fpm.sock;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+     }
+ }' > /etc/nginx/sites-available/harkonen.it27.com
 
-    error_log /var/log/nginx/jarkom_it27_error.log;
-    access_log /var/log/nginx/jarkom_it27_access.log;
-}
-' > /etc/nginx/sites-available/jarkom_it27.conf
-
-rm /etc/nginx/sites-enabled/default
-ln -s /etc/nginx/sites-available/jarkom_it27.conf /etc/nginx/sites-enabled/
-
-service nginx restart
-service php7.3-fpm start
+ service nginx restart
