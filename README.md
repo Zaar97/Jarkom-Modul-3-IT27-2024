@@ -498,7 +498,7 @@ $TTL    604800
 ;
 @       IN      NS      atreides.it27.com.
 @       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
-@       IN      AAAA    ::1' > /etc/bind/atreides/atreides.it27.com
+@       IN      AAAA    ::1' > /etc/bind/jarkom/atreides.it27.com
 
 echo '
 ;
@@ -514,7 +514,7 @@ $TTL    604800
 ;
 @       IN      NS      harkonen.it27.com.
 @       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
-@       IN      AAAA    ::1' > /etc/bind/harkonen/harkonen.it27.com
+@       IN      AAAA    ::1' > /etc/bind/jarkom/harkonen.it27.com
 ```
 
 `@       IN      A       10.77.4.2` disini IP diarahkan ke node Load Balancer Stilgar
@@ -560,7 +560,7 @@ service nginx restart
 Jalankan perintah berikut pada client
 
 ```bash
-ab -n 5000 -c 150 http://www.harkonen.it27.com/
+ab -n 1000 -c 100 http://www.harkonen.it27.com/
 ```
 
 ## Soal 8
