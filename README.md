@@ -26,26 +26,26 @@
     ```bash
     auto eth0
     iface eth0 inet dhcp
-    up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s .0.0/16
+    up iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.77.0.0/16
 
     auto eth1
     iface eth1 inet static
-    address .1.0
+    address 10.77.1.0
     netmask 255.255.255.0
 
     auto eth2
     iface eth2 inet static
-    address .2.0
+    address 10.77.2.0
     netmask 255.255.255.0
 
     auto eth3
     iface eth3 inet static
-    address .3.0
+    address 10.77.3.0
     netmask 255.255.255.0
 
     auto eth4
     iface eth4 inet static
-    address .4.0
+    address 10.77.4.0
     netmask 255.255.255.0
     ```
 
@@ -54,9 +54,9 @@
     ```bash
     auto eth0
     iface eth0 inet static
-    address .3.1
+    address 10.77.3.1
     netmask 255.255.255.0
-    gateway .3.0
+    gateway 10.77.3.0
     ```
 
 - **DNS Server**
@@ -64,9 +64,9 @@
     ```bash
     auto eth0
     iface eth0 inet static
-    address .3.2
+    address 10.77.3.2
     netmask 255.255.255.0
-    gateway .3.0  
+    gateway 10.77.3.0  
     ```
 
 - **Database Server**
@@ -74,9 +74,9 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-	address .4.1
+	address 10.77.4.1
 	netmask 255.255.255.0
-	gateway .4.0  
+	gateway 10.77.4.0  
     ```
 
 - **Load Balancer**
@@ -84,9 +84,9 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-	address .4.2
+	address 10.77.4.2
 	netmask 255.255.255.0
-	gateway .4.0  
+	gateway 10.77.4.0  
     ```
 
 - **Laravel Worker**
@@ -94,27 +94,27 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .2.1
+  	address 10.77.2.1
   	netmask 255.255.255.0
-  	gateway .2.0  
+  	gateway 10.77.2.0  
     ```
 
   - Duncan
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .2.2
+  	address 10.77.2.2
   	netmask 255.255.255.0
-  	gateway .2.0       
+  	gateway 10.77.2.0       
     ```
       
   - Jessica
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .2.3
+  	address 10.77.2.3
   	netmask 255.255.255.0
-  	gateway .2.0        
+  	gateway 10.77.2.0        
     ```
 
 - **PHP Worker**
@@ -122,27 +122,27 @@
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .1.1
+  	address 10.77.1.1
   	netmask 255.255.255.0
-  	gateway .1.0  
+  	gateway 10.77.1.0  
     ```      
 
   - Rabban
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .1.2
+  	address 10.77.1.2
   	netmask 255.255.255.0
-  	gateway .1.0        
+  	gateway 10.77.1.0        
     ```
 
   - Feyd
     ```bash
     auto eth0
 	iface eth0 inet static
-  	address .1.3
+  	address 10.77.1.3
   	netmask 255.255.255.0
-  	gateway .1.0        
+  	gateway 10.77.1.0        
     ```
 
 - **Client**
@@ -184,7 +184,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **DHCP Server**
   ```bash
-	echo 'nameserver .3.2' > /etc/resolv.conf  
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf  
 	apt-get update
 	apt install isc-dhcp-server -y       
   ```
@@ -196,7 +196,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Database Server**
   ```bash
-	echo 'nameserver .3.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install mariadb-server -y
 	service mysql start
@@ -205,7 +205,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Load Balancer**
   ```bash
-	echo 'nameserver .3.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install apache2-utils -y
 	apt-get install nginx -y
@@ -215,7 +215,7 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Worker PHP**
   ```bash
-	echo 'nameserver .3.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install nginx -y
 	apt-get install wget -y
@@ -230,12 +230,12 @@ Setiap node, kita inisiasi pada root `.bashrc` menggunakan `nano`
   ```
 - **Worker Laravel**
   ```bash
-	echo 'nameserver .3.2' > /etc/resolv.conf
+	echo 'nameserver 10.77.3.2' > /etc/resolv.conf
 	apt-get update
 	apt-get install lynx -y
 	apt-get install mariadb-client -y
 	# Test connection from worker to database
-	# mariadb --host=.4.1 --port=3306   --user=kelompokit27 --password=passwordit27 dbkelompokit27 -e "SHOW DATABASES;"
+	# mariadb --host=10.77.4.1 --port=3306   --user=kelompokit27 --password=passwordit27 dbkelompokit27 -e "SHOW DATABASES;"
 	apt-get install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
 	curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
 	sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -264,18 +264,18 @@ Pertama kita perlu mempersiapkan konfigurasi topologi dan setup seperti aturan d
   ```bash
   auto eth0
   iface eth0 inet static
-  address .2.1
+  address 10.77.2.1
   netmask 255.255.255.0
-  gateway .2.0  
+  gateway 10.77.2.0  
   ```
 
 - **Vladimir (PHP Worker)**
   ```bash
   auto eth0
   iface eth0 inet static
-  address .1.1
+  address 10.77.1.1
   netmask 255.255.255.0
-  gateway .1.0  
+  gateway 10.77.1.0  
   ```
 
 ### Script
@@ -310,7 +310,7 @@ $TTL    604800
                         604800 )        ; Negative Cache TTL
 ;
 @               IN      NS      atreides.it27.com.
-@               IN      A       .2.1 ; IP Leto Laravel Workerr' > /etc/bind/jarkom/atreides.it27.com
+@               IN      A       10.77.2.1 ; IP Leto Laravel Workerr' > /etc/bind/jarkom/atreides.it27.com
 
 
 echo ';
@@ -325,7 +325,7 @@ $TTL    604800
                         604800 )        ; Negative Cache TTL
 ;
 @               IN      NS      harkonen.it27.com.
-@               IN      A       .1.1 ; IP Vladimir PHP Worker' > /etc/bind/jarkom/harkonen.it27.com
+@               IN      A       10.77.1.1 ; IP Vladimir PHP Worker' > /etc/bind/jarkom/harkonen.it27.com
 
 
 echo 'options {
@@ -375,30 +375,30 @@ max-lease-time 7200;
 
 ddns-update-style-none;
 
-subnet .1.0 netmask 255.255.255.0 {
-    range .1.14 .1.28;
-    range .1.49 .1.70;
-    option routers .1.0;
-    option broadcast-address .1.255;
-    option domain-name-servers .3.2;
+subnet 10.77.1.0 netmask 255.255.255.0 {
+    range 10.77.1.14 10.77.1.28;
+    range 10.77.1.49 10.77.1.70;
+    option routers 10.77.1.0;
+    option broadcast-address 10.77.1.255;
+    option domain-name-servers 10.77.3.2;
     default-lease-time 300;
     max-lease-time 5220;
 }
 
-subnet .2.0 netmask 255.255.255.0 {
-    range .2.15 .2.25;
-    range .2.200 .2.210;
-    option routers .2.0;
-    option broadcast-address .2.255;
-    option domain-name-servers .3.2;
+subnet 10.77.2.0 netmask 255.255.255.0 {
+    range 10.77.2.15 10.77.2.25;
+    range 10.77.2.200 10.77.2.210;
+    option routers 10.77.2.0;
+    option broadcast-address 10.77.2.255;
+    option domain-name-servers 10.77.3.2;
     default-lease-time 1200;
     max-lease-time 5220;
 }
 
-subnet .3.0 netmask 255.255.255.0 {
+subnet 10.77.3.0 netmask 255.255.255.0 {
 }
 
-subnet .4.0 netmask 255.255.255.0 {
+subnet 10.77.4.0 netmask 255.255.255.0 {
 }
 
 "
@@ -466,7 +466,6 @@ echo 'server {
 
 
 service nginx restart
-service php7.3-fpm start
 ```
 
 ### Testing Result
@@ -495,7 +494,7 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      atreides.it27.com.
-@       IN      A       .4.2 ; IP Load Balancer Stilgar
+@       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
 @       IN      AAAA    ::1' > /etc/bind/atreides/atreides.it27.com
 
 echo '
@@ -511,7 +510,7 @@ $TTL    604800
                          604800 )       ; Negative Cache TTL
 ;
 @       IN      NS      harkonen.it27.com.
-@       IN      A       .4.2 ; IP Load Balancer Stilgar
+@       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
 @       IN      AAAA    ::1' > /etc/bind/harkonen/harkonen.it27.com
 ```
 
@@ -521,9 +520,9 @@ Lalu kembali ke node `Stilgar` dan lakukan konfigurasi pada nginx sebagai beriku
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
 
 echo ' upstream worker {
-    server .1.1;
-    server .1.2;
-    server .1.3;
+    server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
 }
 
 server {
@@ -552,7 +551,7 @@ service nginx restart
 Jalankan perintah berikut pada client
 
 ```bash
-ab -n 1000 -c 100 http://www.harkonen.it27.com/
+ab -n 5000 -c 150 http://www.harkonen.it30.com/
 ```
 
 ## Soal 8
