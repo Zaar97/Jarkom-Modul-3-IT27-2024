@@ -700,7 +700,7 @@ upstream leastconn_worker {
 
 1. Masukkan IP DNS Server (Irulan) ke dalam Database Server (Chani) 
 ```
-echo 'nameserver 192.243.1.2' > etc/resolv.conf
+echo 'nameserver 10.77.3.2' > etc/resolv.conf
 ```
 
 2. Masuk ke dalam MYSQL
