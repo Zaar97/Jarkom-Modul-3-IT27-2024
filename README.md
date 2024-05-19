@@ -848,13 +848,6 @@ fi
 service nginx restart
 ```
 
-### Testing
-
-Jalankan lynx http://harkonen.it30.com/ pada Client Paul untuk melihat apakah autentikasi bisa berfungsi.
-
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/46c99526-a741-4e11-9b01-1b76c79b6492)
-
-
 ## Soal 11
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/. **hint: (proxy_pass)**
 
