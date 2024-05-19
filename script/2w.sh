@@ -26,6 +26,7 @@ server {
     location /leastconn {
         proxy_pass http://leastconn_worker;
     }
+' > /etc/nginx/sites-available/lb_php
 
 ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
 
