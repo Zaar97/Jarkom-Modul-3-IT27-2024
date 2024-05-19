@@ -8,9 +8,9 @@ unzip harkonen.zip
 
 # meletakkan komponen web
 mkdir -p /var/www/harkonen.it27.com
-mv /root/modul-3/* /var/www/harkonen.it27.com/
+mv modul-3 /var/www/harkonen.it27.com/
 
-rm -rf /root/modul-3
+rm -rf modul-3
 rm harkonen.zip
 
 echo 'server {
