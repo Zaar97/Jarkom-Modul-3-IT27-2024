@@ -1,6 +1,8 @@
 mkdir /etc/nginx/supersecret
 htpasswd -c /etc/nginx/supersecret/htpasswd secmart 
 
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
 echo '
 upstream worker {
     server 10.77.1.1;
@@ -25,3 +27,11 @@ server {
     auth_basic "Restricted Content";
     auth_basic_user_file /etc/nginx/supersecret/htpasswd;
 }' > /etc/nginx/sites-available/lb_php
+
+ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm /etc/nginx/sites-enabled/default
+fi
+
+service nginx restart
