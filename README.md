@@ -647,3 +647,44 @@ server {
 
 **Generic Hash**
 
+## Soal 9
+
+> Dengan menggunakan algoritma Least-Connection, lakukan testing dengan menggunakan 3 worker, 2 worker, dan 1 worker sebanyak 1000 request dengan 10 request/second, kemudian tambahkan grafiknya pada peta
+
+Setelah melakukan setup pada node Stilgar sekarang lakukan testing pada load balancer yang telah dibuat sebelumnya. Yang menjadi pembeda adalah kita harus melakukan testing menggunakan 1 worker, 2 worker, dan 3 worker.
+
+Jalankan command berikut pada client
+
+```bash
+ab -n 1000 -c 10 http://www.harkonen.it27.com/leastconn/
+```
+
+### Result
+
+**3 Worker**
+
+**2 Worker**
+
+Sebelum testing, pastikan mengcomment IP worker yang ingin dimatikan pada file /etc/nginx/sites-available/lb_php
+```bash
+upstream leastconn_worker {
+    least_conn;
+    # server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
+}
+```
+
+**1 Worker**
+
+Sebelum testing, pastikan mengcomment IP worker yang ingin dimatikan pada file /etc/nginx/sites-available/lb_php
+```bash
+upstream leastconn_worker {
+    least_conn;
+    # server 10.77.1.1;
+    # server 10.77.1.2;
+    server 10.77.1.3;
+}
+```
+## Soal 10
+> Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/
