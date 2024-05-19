@@ -648,6 +648,12 @@ server {
     }
 } ' > /etc/nginx/sites-available/lb_php
 
+ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+
+if [ -f /etc/nginx/sites-enabled/default ]; then
+    rm /etc/nginx/sites-enabled/default
+fi
+
 service nginx restart
 ```
 
@@ -655,11 +661,63 @@ service nginx restart
 
 **Round Robin**
 
+```bash
+ab -n 500 -c 50 http://harkonen.it27.com/roundrobin/
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/28a1fe8e-4f60-44e4-9b08-d51c5863ca1d)
+
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    969.68 [#/sec] (mean)`
+
 **Least Connection**
+
+```bash
+ab -n 500 -c 50 http://harkonen.it27.com/leastconn/
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/a570494a-80f8-4adf-ad39-ad15b67806d9)
+
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    1085.55 [#/sec] (mean)`
+
+**Weighted Round Robin**
+
+```bash
+ab -n 500 -c 50 http://harkonen.it27.com/weightedrr/
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/1de6b06d-cfef-4fa8-82db-cd5ef9a19210)
+
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    1230.03 [#/sec] (mean)`
 
 **IP Hash**
 
+```bash
+ab -n 500 -c 50 http://harkonen.it27.com/iphash/
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/3ec4efc5-ff39-49bb-a6b1-96a4c61de5f7)
+
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    1330.95 [#/sec] (mean)`
+
 **Generic Hash**
+
+```bash
+ab -n 500 -c 50 http://harkonen.it27.com/hash/
+```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/a90aae55-bba6-4f36-aa3e-85bb5d809079)
+
+Dapat dilihat, request tersebut menghasilkan `Requests per second:    1160.04 [#/sec] (mean)`
+
+### Analisis
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/5277ee5a-3e5b-4523-a43f-a8b46d66be46)
+
+Round Robin memiliki proses request tercepat
 
 ## Soal 9
 
