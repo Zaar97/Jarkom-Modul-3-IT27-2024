@@ -871,7 +871,12 @@ server {
     
     location ~ /dune {
     	rewrite ^/dune(.*)$ /$1 break;
-     	proxy_pass https://www.dunemovie.com.au:443;
+     	proxy_pass https://www.dunemovie.com.au/;
+    	proxy_set_header Host www.dunemovie.com.au;
+    	proxy_set_header X-Real-IP $remote_addr;
+    	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    	proxy_set_header X-Forwarded-Proto $scheme;
+
       	break;
        }
 	
