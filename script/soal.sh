@@ -10,7 +10,7 @@ unzip harkonen.zip
 mkdir -p /var/www/jarkom_it27
 mv modul-3 /var/www/jarkom_it27/
 
-rm -rf /root/modul-3
+rm -rf modul-3
 rm harkonen.zip
 
 echo 'server {
