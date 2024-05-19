@@ -11,6 +11,10 @@
   - [Topology](#topology)
   - [Network Configurations](#network-configurations)
   - [Prerequisite](#prerequisite)
+- [Soal 1](#soal-1)
+- [Soal 2,3,4,5](#soal-2,3,4,5)
+- [Soal 6](#soal-6)
+- [Soal 7](#soal-7)
 
 ## Topology
 
@@ -424,8 +428,135 @@ service isc-dhcp-server restart
 Sebelum mengerjakan perlu untuk melakukan [setup](#prerequisite) terlebih dahulu pada seluruh PHP Worker. Jika sudah, silahkan untuk melakukan konfigurasi tambahan sebagai berikut untuk melakukan download dan unzip menggunakan command wget
 
 ```bash
-wget -O '/var/www/harkonen.it27.com' 'https://drive.google.com/file/d/1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30/view?usp=sharing'
+wget --no-check-certificate 'https://drive.google.com/file/d/1lmnXJUbyx1JDt2OA5z_1dEowxozfkn30/view?usp=sharing' -O '/var/www/harkonen.it27.com'
 unzip -o /var/www/harkonen.it27.com -d /var/www/
 rm /var/www/harkonen.it27.com
 mv /var/www/modul-3 /var/www/harkonen.it27.com
 ```
+
+### Script
+
+```bash
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/harkonen.it27.com
+ln -s /etc/nginx/sites-available/harkonen.it27.com /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+
+echo 'server {
+    listen 80;
+    server_name _;
+
+
+    root /var/www/harkonen.it27.com;
+    index index.php index.html index.htm;
+
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.3-fpm.sock;  # Sesuaikan versi PHP dan socket
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}' > /etc/nginx/sites-available/granz.channel.it26.com
+
+
+service nginx restart
+```
+
+### Testing Result
+
+Jalanin Perintah `lynx localhost` pada masing-masing worker dan hasilnya akan sebagai berikut:
+
+## Soal 7
+> Aturlah agar Stilgar dari fremen dapat dapat bekerja sama dengan maksimal, lalu lakukan testing dengan 5000 request dan 150 request/second.
+
+Sebelum mengerjakan perlu untuk melakukan [setup](#prerequisite) terlebih dahulu. Setelah melakukan konfigurasi diatas, sekarang lakukan konfigurasi `Load Balancing` pada node `Stilgar` sebagai berikut
+
+### Script
+Sebelum melakukan setup soal 7. Buka kembali Node `DNS Server` dan arahkan domain tersebut pada IP `Load Balancer` `Stilgar`
+
+```bash
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     atreides.it27.com. root.atreides.it27.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      atreides.it27.com.
+@       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
+@       IN      AAAA    ::1' > /etc/bind/atreides/atreides.it27.com
+
+echo '
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     harkonen.it27.com. root.harkonen.it27.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      harkonen.it27.com.
+@       IN      A       10.77.4.2 ; IP Load Balancer Stilgar
+@       IN      AAAA    ::1' > /etc/bind/harkonen/harkonen.it27.com
+```
+
+Lalu kembali ke node `Stilgar` dan lakukan konfigurasi pada nginx sebagai berikut
+
+```bash
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/lb_php
+
+echo ' upstream worker {
+    server 10.77.1.1;
+    server 10.77.1.2;
+    server 10.77.1.3;
+}
+
+server {
+    listen 80;
+    server_name harkonen.it27.com www.harkonen.it27.com;
+
+    root /var/www/html;
+
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        proxy_pass http://worker;
+    }
+} ' > /etc/nginx/sites-available/lb_php
+
+ln -s /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+```
+
+### Testing Result
+
+Jalankan perintah berikut pada client
+
+```bash
+ab -n 5000 -c 150 http://www.harkonen.it30.com/
+```
+
+## Soal 8
+> Karena diminta untuk menuliskan peta tercepat menuju spice, buatlah analisis hasil testing dengan 500 request dan 50 request/second masing-masing algoritma Load Balancer dengan ketentuan sebagai berikut:
+> - Nama Algoritma Load Balancer
+> - Report hasil testing pada Apache Benchmark
+> - Grafik request per second untuk masing masing algoritma. 
+> - Analisis
