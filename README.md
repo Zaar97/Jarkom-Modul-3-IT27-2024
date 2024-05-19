@@ -694,3 +694,56 @@ upstream leastconn_worker {
 ```
 ## Soal 10
 > Selanjutnya coba tambahkan keamanan dengan konfigurasi autentikasi di LB dengan dengan kombinasi username: “secmart” dan password: “kcksyyy”, dengan yyy merupakan kode kelompok. Terakhir simpan file “htpasswd” nya di /etc/nginx/supersecret/
+
+## Soal 13
+> Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica
+
+1. Masukkan IP DNS Server (Irulan) ke dalam Database Server (Chani) 
+```
+echo 'nameserver 192.243.1.2' > etc/resolv.conf
+```
+
+2. Masuk ke dalam MYSQL
+```
+mysql -u root -p
+```
+NOTE: password untuk user root adalah root
+
+3. Eksekusi Query yang akan digunakan untuk aplikasi Laravel nanti
+```
+CREATE USER 'kelompokit27'@'%' IDENTIFIED BY 'passwordit27';
+CREATE USER 'kelompokit27'@'localhost' IDENTIFIED BY 'passwordit27';
+CREATE DATABASE dbkelompokit27;
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokit27'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'kelompokit27'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+4. Lakukan konfigurasi pada `/etc/mysql/my.cnf` agar database dapat diakses oleh worker Laravel
+```
+[mysqld]
+skip-networking=0
+skip-bind-address
+```
+
+5. Ubah bind-address pada `/etc/mysql/mariadb.conf.d/50-server.cnf` menjadi seperti berikut
+```
+bind-address            = 0.0.0.0
+```
+
+6. Jangan lupa restart MYSQL 
+
+7. Coba akses database dari Laravel Worker
+```
+mariadb --host=10.7.4.1 --port=3306 --user=kelompokit27 --password=passwordit27 dbkelompokit27
+```
+### Result
+**Leto**<br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/01cca8af-d28a-49f8-96f7-1458e58e8885)
+
+**Duncan** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/1b5aa98f-4405-441e-8f66-337e033c5653)
+
+**Jessica** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/4137a1fd-f36b-4996-b33a-2e7a908b49f4)
+
