@@ -15,6 +15,12 @@
 - [Soal 2,3,4,5](#soal-2,3,4,5)
 - [Soal 6](#soal-6)
 - [Soal 7](#soal-7)
+- [Soal 8](#soal-8)
+- [Soal 9](#soal-9)
+- [Soal 10](#soal-10)
+- [Soal 11](#soal-11)
+- [Soal 13](#soal-13)
+- [Soal 14](#soal-14)
 
 ## Topology
 
