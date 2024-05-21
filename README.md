@@ -1111,3 +1111,250 @@ service php8.0-fpm start
 ### Result
 **Jessica** <br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/01b0e88d-a6b8-4abf-97b6-35913d5bfeb5)
+
+## Soal 15-17
+> atreides Channel memiliki beberapa endpoint yang harus ditesting sebanyak 100 request dengan 10 request/second. Tambahkan response dan hasil testing pada peta.
+
+- Lakukan installasi juga untuk package yang diperlukan untuk benchmarking seperti Apache Benchmark dan Htop
+
+```
+apt-get update
+apt-get install lynx -y
+apt-get install htop -y
+apt-get install apache2-utils -y
+apt-get install jq -y
+```
+
+- Buat file `cred.json` yang digunakan untuk menyimpan credentials yang dibuat sebelumnya
+
+```
+{
+  "username": "kelompokit27",
+  "password": "passwordit27"
+}
+```
+
+### 15. POST /auth/register
+
+- Testing dilakukan sebanyak 100 kali request dengan frekuensi 10 request/s
+
+```
+ab -n 100 -c 10 -p cred.json -T application/json http://10.77.2.1:8001/api/auth/register
+```
+
+**Result** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/c6aca088-6756-41ee-8c8a-069c43661425)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/ea3bdfae-64b4-4e99-b6d0-51dfc3e8185f)
+
+### 16. POST /auth/login
+- Testing dilakukan sebanyak 100 kali request dengan frekuensi 10 request/s
+
+```
+ab -n 100 -c 10 -p cred.json -T application/json http://10.77.2.1:8001/api/auth/login
+```
+**Result** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/6503eb0a-9674-41ab-b751-2e16d6bb93ca)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/c428a630-3858-432f-947c-c591a5dce2af)
+
+### 17. GET /me
+- Testing dilakukan sebanyak 100 kali request dengan frekuensi 10 request/s
+
+```
+ab -n 100 -c 10 -p cred.json -T application/json http://10.77.2.1:8001/api/auth/me
+```
+**Result** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/8273002e-65c8-4b17-9051-3290457ce1a0)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/03544fbf-ea4d-4ed0-ba5d-1551264fd4a1)
+
+## Soal 18
+> Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur atreides Channel maka implementasikan Proxy Bind pada Stilgar untuk mengaitkan IP dari Leto, Duncan, dan Jessica
+
+- #### Arahkan Nameserver ke DNS Server 
+```
+echo 'nameserver 10.77.3.2' > etc/resolv.conf
+```
+- #### Konfigurasi ulang Bind di Irulan
+```
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     atreides.it27.com. root.atreides.it27.com. (
+                        2023101001      ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      atreides.it27.com.
+@       IN      A       10.77.4.2     ; IP Stilgar (Load Balancer)
+www     IN      CNAME   atreides.it27.com.
+```
+- #### Lakukan Konfigurasi pada File /etc/nginx/sites-available/laravel-worker pada Load Balancer
+```
+upstream worker {
+    server 10.77.2.1:8001;
+    server 10.77.2.2:8002;
+    server 10.77.2.3:8003;
+}
+server {
+    listen 80;
+    server_name atreides.it27.com www.atreides.it27.com;
+
+    location / {
+        proxy_pass http://worker;
+    }
+}
+```
+- #### Buat Symbol Link dan Restart Nginx
+```
+ln -s /etc/nginx/sites-available/laravel-worker /etc/nginx/sites-enabled/laravel-worker
+
+service nginx restart
+```
+- ### Testing
+```
+ab -n 100 -c 10 -p cred.json -T application/json http://atreides.it27.com/api/auth/login
+```
+### Result <br>
+** Benchmarking dilakukan tidak lagi dengan port, tetapi dengan domain**
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/28df8c5e-ebf6-4d8c-9943-45b3c573e25f)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/293a45ce-d0a0-4660-b20a-3e421b527ca1)
+
+**3 Worker Sudah Balance** <br>
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/9c1fc57e-b6c9-4c2b-9382-3d9946386543)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e8786fd7-403d-470c-a91c-3bf4027f1f4d)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/d0ff57d4-caa3-4b8d-a5d7-d6acbd55871c)
+
+## Soal 19
+> Untuk memastikan ketiganya bekerja sama secara adil untuk mengatur atreides Channel maka implementasikan Proxy Bind pada Stilgar untuk mengaitkan IP dari Leto, Duncan, dan Jessica
+Untuk meningkatkan performa dari Worker, coba implementasikan PHP-FPM pada Leto, Duncan, dan Jessica. Untuk testing kinerja naikkan:
+- pm.max_children
+- pm.start_servers
+- pm.min_spare_servers
+- pm.max_spare_servers
+sebanyak tiga percobaan dan lakukan testing sebanyak 100 request dengan 10 request/second kemudian berikan hasil analisisnya pada PDF
+
+- Untuk Mengubah Parameter - Parameter Tersebut akses file `/etc/php/8.0/fpm/pool.d/www.conf`. Di sini saya akan menggunakan script untuk mengubah file
+- v1.sh
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 1
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart
+```
+- v2.sh
+```
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 25
+pm.start_servers = 5
+pm.min_spare_servers = 5
+pm.max_spare_servers = 10' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart  
+```
+- v3.sh
+```
+# Setup Awal
+echo '[www]
+user = www-data
+group = www-data
+listen = /run/php/php8.0-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+php_admin_value[disable_functions] = exec,passthru,shell_exec,system
+php_admin_flag[allow_url_fopen] = off
+
+; Choose how the process manager will control the number of child processes.
+
+pm = dynamic
+pm.max_children = 75
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20' > /etc/php/8.0/fpm/pool.d/www.conf
+
+service php8.0-fpm restart  
+```
+
+- Testing Command masih sama dengan soal 18
+- Gunakan htop untuk melihat perubahannya
+### Result v1 <br>
+- Leto
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/04cee005-6696-48b1-82b3-ad1d6898f5ea)
+- Duncan
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/7809d589-a4ca-4775-a2c3-a848985ad80d)
+- Jessica
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/df511d64-f397-4125-92ef-87f636cd4ed1)
+
+### Result v2
+- Leto
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/6b4dd320-90c9-46ba-a29c-aaea688fbb97)
+- Duncan
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/b568036b-ca1c-4b4e-8b05-485f4a2b39bf)
+- Jessica
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/a84c71bb-5128-493b-87a1-2c51982cb08b)
+
+### Result v3
+- Leto
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/f2817fef-4707-45ad-ae56-2f5ab9801eec)
+- Duncan
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/84556448-ae04-428a-a7e5-06d6a1b041bc)
+- Jessica
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/932ccf72-ac59-4184-99a8-e692dfcb2038)
+
+## Soal 20
+> Nampaknya hanya menggunakan PHP-FPM tidak cukup untuk meningkatkan performa dari worker maka implementasikan Least-Conn pada Stilgar. Untuk testing kinerja dari worker tersebut dilakukan sebanyak 100 request dengan 10 request/second.
+
+- Caranya cukup sederhana, yakni dengan menambahkan "least_conn;" pada `/etc/nginx/sites-available/laravel-worker`
+```
+upstream worker {
+    least_conn
+    server 10.77.2.1:8001;
+    server 10.77.2.2:8002;
+    server 10.77.2.3:8003;
+}
+server {
+    listen 80;
+    server_name atreides.it27.com www.atreides.it27.com;
+
+    location / {
+        proxy_pass http://worker;
+    }
+}
+```
+- Kemudian testing ulang dengan command yang sama
+```
+ab -n 100 -c 10 -p cred.json -T application/json http://atreides.it27.com/api/auth/login
+```
+### Result
+- Leto
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e4948a6a-5a81-4f90-bff7-7de5a9a5cde0)  
+- Duncan
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/d12ee29d-aca7-4297-b8ea-f4e892857ac4)
+- Jessica
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e3474104-42db-4d5e-928c-3e8d8ea2bbef)
