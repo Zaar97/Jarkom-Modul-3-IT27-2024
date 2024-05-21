@@ -1109,5 +1109,5 @@ service nginx restart
 service php8.0-fpm start
 ```
 ### Result
-**Jessica**
+**Jessica** <br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/01b0e88d-a6b8-4abf-97b6-35913d5bfeb5)
