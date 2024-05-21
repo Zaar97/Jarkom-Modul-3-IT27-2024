@@ -1304,27 +1304,27 @@ service php8.0-fpm restart
 - Testing Command masih sama dengan soal 18
 - Gunakan htop untuk melihat perubahannya
 ### Result v1 <br>
-- Leto
+- Leto<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/04cee005-6696-48b1-82b3-ad1d6898f5ea)
-- Duncan
+- Duncan<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/7809d589-a4ca-4775-a2c3-a848985ad80d)
-- Jessica
+- Jessica<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/df511d64-f397-4125-92ef-87f636cd4ed1)
 
 ### Result v2
-- Leto
+- Leto<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/6b4dd320-90c9-46ba-a29c-aaea688fbb97)
-- Duncan
+- Duncan<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/b568036b-ca1c-4b4e-8b05-485f4a2b39bf)
-- Jessica
+- Jessica<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/a84c71bb-5128-493b-87a1-2c51982cb08b)
 
 ### Result v3
-- Leto
+- Leto<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/f2817fef-4707-45ad-ae56-2f5ab9801eec)
-- Duncan
+- Duncan<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/84556448-ae04-428a-a7e5-06d6a1b041bc)
-- Jessica
+- Jessica<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/932ccf72-ac59-4184-99a8-e692dfcb2038)
 
 ## Soal 20
@@ -1352,9 +1352,9 @@ server {
 ab -n 100 -c 10 -p cred.json -T application/json http://atreides.it27.com/api/auth/login
 ```
 ### Result
-- Leto
+- Leto <br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e4948a6a-5a81-4f90-bff7-7de5a9a5cde0)  
-- Duncan
+- Duncan <br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/d12ee29d-aca7-4297-b8ea-f4e892857ac4)
-- Jessica
+- Jessica<br>
 ![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/136430870/e3474104-42db-4d5e-928c-3e8d8ea2bbef)
