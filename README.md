@@ -858,65 +858,77 @@ service nginx restart
 
 Pada Client, jalankan command lynx http://harkonen.it27.com/
 
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/64f596f0-f3e6-4aab-84ea-792a9074b5fb)
-
-![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/71bc59b2-22fa-4534-8665-873de55d9fd2)
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/80c38d7d-baf6-4899-a036-ec7293dd92b5)
 
 ## Soal 11
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/. **hint: (proxy_pass)**
 
 ```bash
-echo '
+
+cat <<EOL >/etc/nginx/sites-available/lb_php
 upstream worker {
     server 10.77.1.1;
     server 10.77.1.2;
     server 10.77.1.3;
 }
 
+
 server {
     listen 80;
     server_name harkonen.it27.com www.harkonen.it27.com;
 
+
     root /var/www/html;
+
 
     index index.html index.htm index.nginx-debian.html;
 
-    server_name _;
-    
-    location ~ /dune {
-    	rewrite ^/dune(.*)$ /$1 break;
-     	proxy_pass https://www.dunemovie.com.au/;
-    	proxy_set_header Host www.dunemovie.com.au;
-    	proxy_set_header X-Real-IP $remote_addr;
-    	proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    	proxy_set_header X-Forwarded-Proto $scheme;
 
-      	break;
-       }
-	
     location / {
-        proxy_pass http://worker;   
-    	auth_basic "Restricted Content";
-    	auth_basic_user_file /etc/nginx/supersecret/htpasswd;
-        proxy_set_header    X-Real-IP $remote_addr;
-        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header    Host $http_host;
-	}
-    
-}' > /etc/nginx/sites-available/lb_php
+        proxy_pass http://worker;
+    }
 
+
+    location ~ /dune {
+        proxy_pass https://www.dunemovie.com.au;
+        proxy_set_header Host www.dunemovie.com.au;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+    }
+}
+EOL
+
+
+# konfigurasi baru
 ln -sf /etc/nginx/sites-available/lb_php /etc/nginx/sites-enabled/
-#rm /etc/nginx/sites-enabled/default
 
+
+# hapus konfigurasi default jika ada
 if [ -f /etc/nginx/sites-enabled/default ]; then
     rm /etc/nginx/sites-enabled/default
 fi
 
+
+# Restart
 service nginx restart
+
 ```
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/3f92dae8-d736-457a-bf8e-42a18265d988)
+
 
 ## Soal 12
 Selanjutnya LB ini hanya boleh diakses oleh client dengan IP [Prefix IP].1.37, [Prefix IP].1.67, [Prefix IP].2.203, dan [Prefix IP].2.207. **hint: (fixed in dulu clientnya)**
+
+Berikut hasilnya jika diakses oleh ip yang tidak diperbolehkan:
+
+![Screenshot 2024-05-19 165137](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/cb02de20-e695-439c-bcb5-ae2369e7d98f)
+
+Berikut hasilnya jika diakses oleh ip yang diperbolehkan:
+
+![Screenshot 2024-05-19 174238](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/6bb95655-1dcc-4dfb-86a6-9c39878de5d5)
+
 
 ## Soal 13
 > Semua data yang diperlukan, diatur pada Chani dan harus dapat diakses oleh Leto, Duncan, dan Jessica
