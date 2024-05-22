@@ -854,6 +854,14 @@ fi
 service nginx restart
 ```
 
+### Testing
+
+Pada Client, jalankan command lynx http://harkonen.it27.com/
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/64f596f0-f3e6-4aab-84ea-792a9074b5fb)
+
+![image](https://github.com/Zaar97/Jarkom-Modul-3-IT27-2024/assets/128958228/71bc59b2-22fa-4534-8665-873de55d9fd2)
+
 ## Soal 11
 Lalu buat untuk setiap request yang mengandung /dune akan di proxy passing menuju halaman https://www.dunemovie.com.au/. **hint: (proxy_pass)**
 
